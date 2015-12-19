@@ -22,6 +22,37 @@ brew 'spark'
 brew 'unrar'
 brew 'youtube-dl'
 
+# from https://github.com/mathiasbynens/dotfiles/blob/master/brew.sh
+brew 'moreutils'
+brew 'findutils'
+brew 'gnu-sed', args: ['with-default-names']
+
+brew 'vim', args: ['override-system-vi']
+brew 'homebrew/dupes/grep'
+brew 'homebrew/dupes/openssh'
+brew 'homebrew/dupes/screen'
+
+tap 'bramstein/webfonttools'
+brew 'sfnt2woff'
+brew 'sfnt2woff-zopfli'
+brew 'woff2'
+
+brew 'dark-mode'
+brew 'git'
+brew 'git-lfs'
+brew 'lua'
+brew 'lynx'
+brew 'p7zip'
+brew 'pigz'
+brew 'pv'
+brew 'rename'
+brew 'rhino'
+brew 'speedtest_cli'
+brew 'ssh-copy-id'
+brew 'tree'
+brew 'webkit2png'
+brew 'zopfli'
+
 cask 'atom'
 cask 'google-chrome'
 cask 'slack'
