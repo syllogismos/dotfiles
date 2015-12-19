@@ -57,3 +57,4 @@ cask 'atom'
 cask 'google-chrome'
 cask 'slack'
 cask 'vlc'
+cask 'aerial' # https://github.com/JohnCoates/Aerial Screen saver
