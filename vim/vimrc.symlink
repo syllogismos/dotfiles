@@ -93,3 +93,6 @@ if has("autocmd")
     " Treat .md fiels as Markdown
     autocmd BufNewFile, BufRead *.md setlocal filetype=markdown
 endif
+
+" http://stackoverflow.com/questions/9850360/what-is-netrwhist
+let g:netrw_dirhistmax=0
