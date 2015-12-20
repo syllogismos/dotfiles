@@ -103,3 +103,6 @@ inoremap kj <esc>
 
 " map ,, for completions, intellisense of sorts
 inoremap ,,  <C-p>
+
+" map spacebar to save current file in normal mode
+noremap <Space> :w<Esc>
