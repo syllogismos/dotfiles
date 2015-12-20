@@ -22,6 +22,7 @@ brew 'spark'
 brew 'unrar'
 brew 'youtube-dl'
 brew 'jq'
+brew 'gist'
 
 # from https://github.com/mathiasbynens/dotfiles/blob/master/brew.sh
 brew 'moreutils'
