@@ -96,3 +96,10 @@ endif
 
 " http://stackoverflow.com/questions/9850360/what-is-netrwhist
 let g:netrw_dirhistmax=0
+
+" mapping jk and kj to to get to normal mode from insert mode
+inoremap jk <esc>
+inoremap kj <esc>
+
+" map ,, for completions, intellisense of sorts
+inoremap ,,  <C-p>
