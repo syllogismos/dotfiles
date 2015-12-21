@@ -106,3 +106,6 @@ inoremap ,,  <C-p>
 
 " map spacebar to save current file in normal mode
 noremap <Space> :w<Esc>
+
+" set working directory in the current file
+set autochdir
