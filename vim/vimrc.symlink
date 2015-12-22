@@ -109,3 +109,7 @@ noremap <Space> :w<Esc>
 
 " set working directory in the current file
 set autochdir
+
+" iterm background in vim
+" http://stackoverflow.com/questions/21572179/vim-color-scheme-overriding-the-background-settings-in-gnome-terminal
+hi Normal ctermbg=none
