@@ -3,8 +3,12 @@
     showIndentGuide: true
     fontFamily: "Menlo"
     invisibles: {}
-    fontSize: 15
     softWrapAtPreferredLineLength: true
+    showInvisibles: true
+    tabLength: 4
+    tabType: "soft"
+    zoomFontWhenCtrlScrolling: true
+    fontSize: 12
   core:
     ignoredNames: [
       ".bundle"
