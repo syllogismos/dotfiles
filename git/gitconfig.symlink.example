@@ -3,22 +3,48 @@
 
 [hub]
         protocol = https
-[user]
-        name = AUTHORNAME
-        email = AUTHOREMAIL
 [credential]
-        helper = GIT_CREDENTIAL_HELPER
+        helper = osxkeychain
 [alias]
         co = checkout
         promote = !$ZSH/bin/git-promote
         wtf     = !$ZSH/bin/git-wtf
         rank-contributors = !$ZSH/bin/git-rank-contributors
         count   = !git shortlog -sn
+        hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+        l = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+
+        # Show verbose output about tags, branches or remotes
+        tags = tag -l
+        branches = branch -a
+        remotes = remote -v
+
+        # Remove branches that have already been merged with master
+        # a.k.a. ‘delete merged’
+        dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+
+        # List contributors with number of commits
+        contributors = shortlog --summary --numbered
+
 [color]
-        diff = auto
-        status = auto
-        branch = auto
         ui = true
+
+[color "branch"]
+        current = yellow reverse
+        local = yellow
+        remote = green
+
+[color "diff"]
+        meta = yellow bold
+        frag = magenta bold # line info
+        old = red # deletions
+        new = green # additions
+
+[color "status"]
+        added = yellow
+        changed = green
+        untracked = cyan
+
 [core]
         excludesfile = ~/.gitignore
         editor = vim
