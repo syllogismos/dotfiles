@@ -60,4 +60,10 @@ cask 'atom'
 cask 'google-chrome'
 cask 'slack'
 cask 'vlc'
-cask 'aerial' # https://github.com/JohnCoates/Aerial Screen saver
+
+# quick look plugins from https://github.com/donnemartin/dev-setup/blob/master/brew.sh
+cask 'qlcolorcode'
+cask 'qlmarkdown'
+cask 'quicklook-json'
+cask 'qlprettypatch'
+cask 'quicklook-csv'
