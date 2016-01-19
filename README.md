@@ -1,4 +1,18 @@
-# holman does dotfiles
+# My dotfiles
+## Symlink
+
+```
+cd .dotfiles
+script/bootstrap
+```
+
+## Install brew formulae
+
+```
+dot
+```
+
+## More Details
 
 Your dotfiles are how you personalize your system. These are mine.
 
