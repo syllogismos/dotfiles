@@ -40,3 +40,5 @@ source ~/.bash_prompt
 
 # aliases file
 source ~/.aliases
+
+eval $(thefuck --alias)
