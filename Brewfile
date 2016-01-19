@@ -67,3 +67,6 @@ cask 'qlmarkdown'
 cask 'quicklook-json'
 cask 'qlprettypatch'
 cask 'quicklook-csv'
+
+# bitbar installation https://github.com/matryer/bitbar
+cask 'bitbar'
