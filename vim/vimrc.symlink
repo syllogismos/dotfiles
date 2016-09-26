@@ -98,8 +98,8 @@ endif
 let g:netrw_dirhistmax=0
 
 " mapping jk and kj to to get to normal mode from insert mode
-inoremap jk <esc>
-inoremap kj <esc>
+inoremap jk <esc>:w<Esc>
+inoremap kj <esc>:w<Esc>
 
 " map ,, for completions, intellisense of sorts
 inoremap ,,  <C-p>
@@ -113,3 +113,4 @@ set autochdir
 " iterm background in vim
 " http://stackoverflow.com/questions/21572179/vim-color-scheme-overriding-the-background-settings-in-gnome-terminal
 hi Normal ctermbg=none
+

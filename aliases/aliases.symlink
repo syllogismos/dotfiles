@@ -9,6 +9,12 @@ alias .....="cd ../../../.."
 alias ~="cd ~"
 alias -- -="cd -"
 
+getWords() {
+    cat /usr/share/dict/words | grep "^"$1"$"
+}
+alias cw=getWords
+
+alias mo="ssh -i ~/.ssh/devOps.cer ubuntu@anil.moengage.com"
 
 # Shortcuts
 alias d="cd ~/Downloads"
