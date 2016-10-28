@@ -123,3 +123,5 @@ export PS2;
 # open ai api key export variable
 OPENAI_GYM_API_KEY="sk_oDXF0kSB6lsPBtdCUz1Q"
 export OPENAI_GYM_API_KEY
+
+zsh

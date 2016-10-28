@@ -101,8 +101,12 @@ directory_name() {
   echo "%{$fg_bold[cyan]%}%3/%\/%{$reset_color%}"
 }
 
+empty_space() {
+    echo "$(df -h | cut -d ' ' -f 12 | head -2 | tail -1)"
+}
 
-export PROMPT=$'[%T] %{$fg_bold[green]%}$USER%{$reset_color%} at %{$fg_bold[yellow]%}%m\%{$reset_color%} in $(directory_name) $(git_dirty)$(need_push)\n$ '
+export PROMPT=$'$fg_bold[white][%T]$reset_color $fg_bold[blue][$(empty_space)]$reset_color %{$fg_bold[green]%}$USER%{$reset_color%} at %{$fg_bold[yellow]%}%m\%{$reset_color%} in $(directory_name) $(git_dirty)$(need_push)\n$ '
+
 set_prompt () {
   export RPROMPT="%{$fg_bold[cyan]%}%{$reset_color%}"
 }
