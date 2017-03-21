@@ -39,3 +39,9 @@ do
 done
 
 unset config_files
+
+# plugins=(git osx)
+ZSH_THEME="robbyrussell"
+
+# added by Anaconda2 4.3.0 installer
+export PATH="/Users/anil/anaconda2/bin:$PATH"

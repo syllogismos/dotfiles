@@ -1,3 +1,24 @@
+"" Vundle settings begin github.com/VundleVim/Vundle.vim
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'tpope/vim-fugitive'
+Plugin 'scrooloose/nerdtree'
+"Plugin 'vim-syntastic/syntastic'
+Plugin 'davidhalter/jedi-vim'
+
+call vundle#end()
+filetype plugin indent on
+
+
+
+
+
 
 " Make Vim more useful
 set nocompatible
@@ -98,8 +119,8 @@ endif
 let g:netrw_dirhistmax=0
 
 " mapping jk and kj to to get to normal mode from insert mode
-inoremap jk <esc>:w<Esc>
-inoremap kj <esc>:w<Esc>
+inoremap jk <esc>
+inoremap kj <esc>
 
 " map ,, for completions, intellisense of sorts
 inoremap ,,  <C-p>
@@ -114,3 +135,8 @@ set autochdir
 " http://stackoverflow.com/questions/21572179/vim-color-scheme-overriding-the-background-settings-in-gnome-terminal
 hi Normal ctermbg=none
 
+
+" Maping Ctrl n to nerdtree toggle
+map <C-n> :NERDTreeToggle<CR>
+
+map <leader>ev :split ~/.vimrc<cr>
