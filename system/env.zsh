@@ -1,1 +1,2 @@
-export EDITOR='atom'
+export VISUAL=vim
+export EDITOR="$VISUAL"

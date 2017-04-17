@@ -10,7 +10,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/nerdtree'
 "Plugin 'vim-syntastic/syntastic'
-Plugin 'davidhalter/jedi-vim'
+"Plugin 'davidhalter/jedi-vim'
 
 call vundle#end()
 filetype plugin indent on

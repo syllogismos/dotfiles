@@ -24,11 +24,16 @@ print "---"
 
 for reservation in reservations:
     for instance in reservation['Instances']:
+        # if instance['State']['Name'] != 'running':
+        #     continue
         if 'Tags' in instance.keys():
             for tag in instance['Tags']:
                 if tag['Key'] == "Name":
                     key_name = instance['KeyName']
-                    ip = instance['PublicIpAddress']
+                    if 'PublicIpAddress' not in instance:
+                        ip = 'terminated'
+                    else:
+                        ip = instance['PublicIpAddress']
                     name = tag['Value']
                     ec2_instances.append({'name': name, 'ip': ip, 'key': key_name})
 
