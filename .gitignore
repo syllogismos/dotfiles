@@ -9,3 +9,6 @@ atom.symlink/blob-store
 
 git/gitconfig.symlink
 vim.symlink/bundle/
+
+*.pyc
+aws_config.py

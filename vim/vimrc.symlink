@@ -23,7 +23,7 @@ filetype plugin indent on
 " Make Vim more useful
 set nocompatible
 " Use the OS clipboard by default
-set clipboard=unnamed
+" set clipboard=unnamed
 " Enhance command-line completion
 set wildmenu
 " Allow cursor keys in insert mode

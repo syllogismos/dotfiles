@@ -47,3 +47,9 @@ tmpfile=$( mktemp -t transferXXX ); if tty -s; then basefile=$(basename "$1" | s
 
 # added by Anaconda2 4.3.0 installer
 export PATH="/Users/anil/anaconda2/bin:$PATH"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/anil/google-cloud-sdk/path.bash.inc' ]; then source '/Users/anil/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/anil/google-cloud-sdk/completion.bash.inc' ]; then source '/Users/anil/google-cloud-sdk/completion.bash.inc'; fi
