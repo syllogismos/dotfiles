@@ -20,7 +20,7 @@ mkdir -p "$tmp_dir" &> /dev/null
 if [[ "$1" = "copy" ]]; then
   if [[ -e "$tmp_dir/item-$2.pb" ]]; then
     pbcopy < "$tmp_dir/item-$2.pb"
-    osascript -e "display notification \"Copied to Clipboard\" with title \"BitBar Clipboard History\"" &> /dev/null
+    # osascript -e "display notification \"Copied to Clipboard\" with title \"BitBar Clipboard History\"" &> /dev/null
   fi
   exit
 fi
@@ -28,7 +28,7 @@ fi
 # If user clicked clear, remove history items
 if [[ "$1" = "clear" ]]; then
   rm -f "$tmp_dir/item-*.pb"
-  osascript -e "display notification \"Cleared clipboard history\" with title \"BitBar Clipboard History\"" &> /dev/null
+  # osascript -e "display notification \"Cleared clipboard history\" with title \"BitBar Clipboard History\"" &> /dev/null
   exit
 fi
 

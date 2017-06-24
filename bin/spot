@@ -7,32 +7,40 @@ import argparse
 import datetime
 import time
 
-conn = ec2.connect_to_region('us-east-1', aws_access_key_id = AWS_ACCESS_KEY,\
-        aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+conn = ec2.connect_to_region('us-east-1', aws_access_key_id=AWS_ACCESS_KEY,
+                             aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
 
 sg = 'sg-8ed5a8eb'
 subnet = {'us-east-1b': 'subnet-347a7e1c',
           'us-east-1c': 'subnet-6255ae15',
           'us-east-1d': 'subnet-e8b551b1'}
 
-ami = 'ami-bc0889aa'
+ami = 'ami-ce133ad8'
 
 key_name = 'facebook'
-def get_spot_prices(instance_type = 'c4.8xlarge'):
-    s = datetime.datetime.now() - datetime.timedelta(hours = 1)
-    prices = conn.get_spot_price_history(start_time = s.isoformat(),\
-            end_time = datetime.datetime.now().isoformat(), instance_type = instance_type,\
-            product_description='Linux/UNIX (Amazon VPC)')
+
+
+def get_spot_prices(instance_type='c4.8xlarge'):
+    s = datetime.datetime.now() - datetime.timedelta(hours=1)
+    prices = conn.get_spot_price_history(start_time=s.isoformat(),
+                                         end_time=datetime.datetime.now().isoformat(),
+                                         instance_type=instance_type,
+                                         product_description='Linux/UNIX (Amazon VPC)')
     prices = filter(lambda x: x.availability_zone != 'us-east-1e', prices)
-    sorted_prices = sorted(prices, cmp = lambda x, y: cmp(x.price, y.price))
+    sorted_prices = sorted(prices, cmp=lambda x, y: cmp(x.price, y.price))
     for x in sorted_prices:
         print x.region, x.availability_zone, x.price
     return sorted_prices
 
-def request_spot(price = '0.9', instance_type = 'm4.large', av_zone = 'us-east-1b', name = 'launched from boto'):
-    req = conn.request_spot_instances(price = price, count = 1,\
-            image_id = ami, key_name = key_name, security_group_ids = [sg], \
-            instance_type = instance_type, subnet_id = subnet[av_zone])
+
+def request_spot(price='0.9', instance_type='m4.large',
+                 av_zone='us-east-1b', name='launched from boto',
+                 ami_id=ami):
+    req = conn.request_spot_instances(price=price, count=1,
+                                      image_id=ami_id, key_name=key_name,
+                                      security_group_ids=[sg],
+                                      instance_type=instance_type,
+                                      subnet_id=subnet[av_zone])
     spot_id = req[0].id
     req[0].add_tag('Name', name)
     print "requested spot", spot_id
@@ -42,7 +50,7 @@ def request_spot(price = '0.9', instance_type = 'm4.large', av_zone = 'us-east-1
         sp_r = get_spot_instance(spot_id)
         if sp_r.state == 'active':
             time.sleep(30)
-            ins_res = conn.get_all_instances(instance_ids = [sp_r.instance_id])
+            ins_res = conn.get_all_instances(instance_ids=[sp_r.instance_id])
             instance = ins_res[0].instances[0]
             print "launched instance id", instance.id
             print "public dns", instance.public_dns_name
@@ -50,12 +58,14 @@ def request_spot(price = '0.9', instance_type = 'm4.large', av_zone = 'us-east-1
             break
     return req[0]
 
+
 def get_spot_instance(spot_id):
     ins = conn.get_all_spot_instance_requests(spot_id)
     return ins[0]
 
+
 def get_instance(instance_id):
-    instance = conn.get_all_instances(instance_ids = [sp_r.instance_id])[0].instances[0]
+    instance = conn.get_all_instances(instance_ids=[sp_r.instance_id])[0].instances[0]
     return instance
 
 if __name__ == '__main__':
@@ -65,10 +75,12 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--price', help='bidding price', type=float, default=0.5)
     parser.add_argument('-z', '--av_zone', help='availability zone', type=str, default='us-east-1b')
     parser.add_argument('-n', '--name', help='name of the instance', type=str, default='from launch script')
+    parser.add_argument('-a', '--ami', help='ami-id', type=str, default=ami)
 
     args = parser.parse_args()
     print args
     if args.request_type == 'price':
         get_spot_prices(args.instance_type)
     elif args.request_type == 'start':
-        request_spot(price=args.price, instance_type=args.instance_type, av_zone=args.av_zone, name=args.name)
+        request_spot(price=args.price, instance_type=args.instance_type,
+                     av_zone=args.av_zone, name=args.name, ami_id=args.ami)
