@@ -27,20 +27,20 @@ print "---"
 
 e = datetime.datetime.now()
 s = e - datetime.timedelta(hours=1)
-instance_types_tups = [('c4.large', '2, 3.75, $0.1'),
-                       ('c4.xlarge', '4, 7.5, $0.2'),
-                       ('c4.2xlarge', '8, 15, $0.39'),
-                       ('c4.4xlarge', '16, 30, $0.79'),
-                       ('c4.8xlarge', '36, 60, $1.59'),
-                       ('c3.large', '2, 3.75, $0.1'),
-                       ('c3.xlarge', '4, 7.5, $0.21'),
-                       ('c3.2xlarge', '8, 15, $0.42'),
-                       ('c3.4xlarge', '16, 30, $0.84'),
-                       ('c3.8xlarge', '32, 60, $1.68'),
-                       ('m4.large', '2, 8, $0.1'),
-                       ('m4.xlarge', '4, 16, $0.2'),
-                       ('m4.2xlarge', '8, 32, $0.4'),
-                       ('m4.4xlarge', '16, 64, $0.8'),
+instance_types_tups = [('c4.large', '2, 3.75, 0.1'),
+                       ('c4.xlarge', '4, 7.5, 0.2'),
+                       ('c4.2xlarge', '8, 15, 0.39'),
+                       ('c4.4xlarge', '16, 30, 0.79'),
+                       ('c4.8xlarge', '36, 60, 1.59'),
+                       ('c3.large', '2, 3.75, 0.1'),
+                       ('c3.xlarge', '4, 7.5, 0.21'),
+                       ('c3.2xlarge', '8, 15, 0.42'),
+                       ('c3.4xlarge', '16, 30, 0.84'),
+                       ('c3.8xlarge', '32, 60, 1.68'),
+                       ('m4.large', '2, 8, 0.1'),
+                       ('m4.xlarge', '4, 16, 0.2'),
+                       ('m4.2xlarge', '8, 32, 0.4'),
+                       ('m4.4xlarge', '16, 64, 0.8'),
                        ]
 instance_types = dict(instance_types_tups)
 av_zones = ['us-east-1b', 'us-east-1c', 'us-east-1d']
@@ -146,8 +146,8 @@ for reservation in reservations:
 
         if 'InstanceLifecycle' in instance:
             if instance['InstanceLifecycle'] == 'spot':
-                name = name + ' ($%0.2f/%s)' % (float(spot_modified[instance_type][av_zone]['SpotPrice']),
-                                                instance_types[instance_type].split(',')[2])
+                name = name + ' (%0.2f/%.2f)' % (float(spot_modified[instance_type][av_zone]['SpotPrice']),
+                                                 float(instance_types[instance_type].split(',')[2]))
         ec2_instances.append({'name': name, 'ip': ip, 'key': key_name,
                               'instance_id': instance_id, 'pr_ip': pr_ip,
                               'instance_type': instance_type,
@@ -167,7 +167,15 @@ for item in sorted_by_name:
     copy_to_clipboard("--" + item['ip'], item['ip'])
     copy_to_clipboard("--" + item['pr_ip'], item['pr_ip'])
 
-    alarm_name = 'LOW-CPU-MON-' + item['name'].upper().replace(' ', '-')
+    alarm_name = item['name'] \
+        .upper() \
+        .replace(' ', '-') \
+        .replace('/', '-') \
+        .replace('$', '') \
+        .replace('(', '') \
+        .replace(')', '')
+    alarm_name = 'LOW-CPU-MON-' + alarm_name
+
     low_alarm_string = "cloudwatch put-metric-alarm --alarm-name %s \
         --alarm-description %s --metric-name CPUUtilization \
         --namespace AWS/EC2 --statistic Average --period 300 \
