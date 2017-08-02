@@ -203,6 +203,7 @@ print "---"
 print "AMIs"
 for ami in sorted_amis:
     print ami['Name']
+    # print ami['Description']
     for instance_type in map(lambda x: x[0], instance_types_tups):
         print '--%s(%s)' % (instance_type, instance_types[instance_type])
         for av_zone in av_zones:
