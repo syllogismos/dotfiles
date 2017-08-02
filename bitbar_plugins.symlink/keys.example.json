@@ -1,0 +1,9 @@
+{
+    "ec2": [
+        {"ACCESS KEY": "your access"},
+        {"SECRET KEY": "your secret"}
+    ],
+    "misc": [
+        {"Server Setup": "wget https://github.com/syllogismos/dotfiles/raw/master/server_setup.sh"}
+    ]
+}
