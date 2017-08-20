@@ -153,6 +153,8 @@ let g:pymode_lint_checkers=['pep8']
 let g:pymode_lint_ignore="E401,E501,E731"
 let g:pymode_rope=0
 
+noremap  <buffer> <silent> k gk
+noremap  <buffer> <silent> j gj
 
 
 noremap <silent> <Leader>w :call ToggleWrap()<CR>
