@@ -13,3 +13,4 @@ vim.symlink/bundle/
 *.pyc
 aws_config.py
 bitbar_plugins.symlink/keys.json
+dump.rdb

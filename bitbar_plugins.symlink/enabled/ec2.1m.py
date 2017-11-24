@@ -117,10 +117,13 @@ for reservation in reservations:
         # if instance['State']['Name'] != 'running':
         #     continue
         name = None
+        prod = None
         if 'Tags' in instance.keys():
             for tag in instance['Tags']:
                 if tag['Key'] == "Name":
                     name = tag['Value']
+                if tag['Key'] == "Production":
+                    prod = tag['Value']
         key_name = instance['KeyName']
 
         if 'PublicIpAddress' not in instance:
@@ -151,54 +154,64 @@ for reservation in reservations:
         ec2_instances.append({'name': name, 'ip': ip, 'key': key_name,
                               'instance_id': instance_id, 'pr_ip': pr_ip,
                               'instance_type': instance_type,
-                              'av_zone': av_zone})
+                              'av_zone': av_zone,
+                              'prod': prod
+                              })
+
+def print_instance_details(instances):
+    for item in instances:
+        copy_command = "echo ssh -i ~/.ssh/%s.pem ubuntu@%s | pbcopy" % (item['key'], item['ip'])
+        # print "%s(%s)" % (item['name'], item['ip'])
+        print item['name']
+        # print "--" + item['ip']
+        print "--copy ssh | bash='/bin/bash' param1='-c' param2='%s' terminal=false" \
+            % (copy_command)
+        copy_to_clipboard("--" + item['ip'], item['ip'])
+        copy_to_clipboard("--" + item['pr_ip'], item['pr_ip'])
+    
+        alarm_name = item['name'] \
+            .upper() \
+            .replace(' ', '-') \
+            .replace('/', '-') \
+            .replace('$', '') \
+            .replace('(', '') \
+            .replace(')', '')
+        alarm_name = 'LOW-CPU-MON-' + alarm_name
+    
+        low_alarm_string = "cloudwatch put-metric-alarm --alarm-name %s \
+            --alarm-description %s --metric-name CPUUtilization \
+            --namespace AWS/EC2 --statistic Average --period 300 \
+            --threshold 20 --comparison-operator LessThanThreshold \
+            --dimensions  Name=InstanceId,Value=%s --evaluation-periods 2 \
+            --alarm-actions arn:aws:sns:us-east-1:051029754231:cpu-alerts-deep-learning \
+            --unit Percent" % (alarm_name, "Alarm_when_CPU_less_than_20%", item['instance_id'])
+        print "--Low CPU Alarm | bash='aws' param1='%s' terminal=true" % (low_alarm_string)
+        print "--Delete Alarm | bash='aws' param1='cloudwatch delete-alarms --alarm-name %s' terminal=true" % (alarm_name)
+    
+        print "--Start | bash='/usr/local/bin/aws' param1='ec2' param2='start-instances' param3='--instance-ids' param4='%s' param5='>>/tmp/bitbar_ec2' terminal=true" % (item['instance_id'])
+        print "--Stop | bash='/usr/local/bin/aws' param1='ec2' param2='stop-instances' param3='--instance-ids' param4='%s' param5='>>/tmp/bitbar_ec2' terminal=true" % (item['instance_id'])
+        print "--Restart | bash='/usr/local/bin/aws' param1='ec2' param2='reboot-instances' param3='--instance-ids' param4='%s' param5='>>/tmp/bitbar_ec2' terminal=true" % (item['instance_id'])
+        try:
+            suffix = ' (%s)' % (','.join(instance_types[item['instance_type']].split(',')[:2]))
+        except:
+            suffix = ''
+        print "--" + item['instance_type'] + suffix
+        print "--" + item['av_zone']
+        if item['prod'] is None:
+            print "--TERMINATE | bash='/usr/local/bin/aws' param1='ec2' param2='terminate-instances' param3='--instance-ids' param4='%s' param5='>>/tmp/bitbar_ec2' terminal=true" % (item['instance_id'])
+        else:
+            print "--TERMINATE"
 
 sorted_by_name = sorted(ec2_instances, key=lambda k: k['name'])
+running = filter(lambda x: x['ip'] != 'Public Ip', sorted_by_name)
+stopped = filter(lambda x: x['ip'] == 'Public Ip', sorted_by_name)
 
 # sorted_by_name.append({'name': 'luzlasdf', 'key': 'lol', 'ip': 'lolz'})
 print "Instances"
-for item in sorted_by_name:
-    copy_command = "echo ssh -i ~/.ssh/%s.pem ubuntu@%s | pbcopy" % (item['key'], item['ip'])
-    # print "%s(%s)" % (item['name'], item['ip'])
-    print item['name']
-    # print "--" + item['ip']
-    print "--copy ssh | bash='/bin/bash' param1='-c' param2='%s' terminal=false" \
-        % (copy_command)
-    copy_to_clipboard("--" + item['ip'], item['ip'])
-    copy_to_clipboard("--" + item['pr_ip'], item['pr_ip'])
-
-    alarm_name = item['name'] \
-        .upper() \
-        .replace(' ', '-') \
-        .replace('/', '-') \
-        .replace('$', '') \
-        .replace('(', '') \
-        .replace(')', '')
-    alarm_name = 'LOW-CPU-MON-' + alarm_name
-
-    low_alarm_string = "cloudwatch put-metric-alarm --alarm-name %s \
-        --alarm-description %s --metric-name CPUUtilization \
-        --namespace AWS/EC2 --statistic Average --period 300 \
-        --threshold 20 --comparison-operator LessThanThreshold \
-        --dimensions  Name=InstanceId,Value=%s --evaluation-periods 2 \
-        --alarm-actions arn:aws:sns:us-east-1:051029754231:cpu-alerts-deep-learning \
-        --unit Percent" % (alarm_name, "Alarm_when_CPU_less_than_20%", item['instance_id'])
-    print "--Low CPU Alarm | bash='aws' param1='%s' terminal=true" % (low_alarm_string)
-    print "--Delete Alarm | bash='aws' param1='cloudwatch delete-alarms --alarm-name %s' terminal=true" % (alarm_name)
-
-    # print "--Start | bash='/bin/bash' param1='-c' param2='aws ec2 start-instances --instance-ids %s' terminal=false" % (item['instance_id'])
-    # print "--Stop | bash='/bin/bash' param1='-c' param2='aws ec2 stop-instances --instance-ids %s'" % (item['instance_id'])
-    # print "--Stop | bash='/bin/bash' param1='-c' param2='aws' param3='ec2' param4='stop-instances' param5='--instance-ids %s' terminal=true" % (item['instance_id'])
-    print "--Start | bash='/usr/local/bin/aws' param1='ec2' param2='start-instances' param3='--instance-ids' param4='%s' param5='>>/tmp/bitbar_ec2' terminal=true" % (item['instance_id'])
-    print "--Stop | bash='/usr/local/bin/aws' param1='ec2' param2='stop-instances' param3='--instance-ids' param4='%s' param5='>>/tmp/bitbar_ec2' terminal=true" % (item['instance_id'])
-    print "--Restart | bash='/usr/local/bin/aws' param1='ec2' param2='reboot-instances' param3='--instance-ids' param4='%s' param5='>>/tmp/bitbar_ec2' terminal=true" % (item['instance_id'])
-    try:
-        suffix = ' (%s)' % (','.join(instance_types[item['instance_type']].split(',')[:2]))
-    except:
-        suffix = ''
-    print "--" + item['instance_type'] + suffix
-    print "--" + item['av_zone']
-    print "--TERMINATE | bash='/usr/local/bin/aws' param1='ec2' param2='terminate-instances' param3='--instance-ids' param4='%s' param5='>>/tmp/bitbar_ec2' terminal=true" % (item['instance_id'])
+print_instance_details(running)
+print "---"
+print "Stopped"
+print_instance_details(stopped)
 print "---"
 print "AMIs"
 for ami in sorted_amis:

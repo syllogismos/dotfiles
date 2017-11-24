@@ -9,7 +9,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/nerdtree'
-Plugin 'python-mode/python-mode'
+"Plugin 'python-mode/python-mode'
 "Plugin 'vim-syntastic/syntastic'
 "Plugin 'davidhalter/jedi-vim'
 
@@ -144,14 +144,14 @@ map <leader>ev :vsplit ~/.vimrc<cr>
 
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
 
-set path+=**
+" set path+=**
 
 " python-mode settings
-let g:pymode_paths=['', '/Users/anil/anaconda2/lib/python27.zip', '/Users/anil/anaconda2/lib/python2.7', '/Users/anil/anaconda2/lib/python2.7/plat-darwin', '/Users/anil/anaconda2/lib/python2.7/plat-mac', '/Users/anil/anaconda2/lib/python2.7/plat-mac/lib-scriptpackages', '/Users/anil/anaconda2/lib/python2.7/lib-tk', '/Users/anil/anaconda2/lib/python2.7/lib-old', '/Users/anil/anaconda2/lib/python2.7/lib-dynload', '/Users/anil/anaconda2/lib/python2.7/site-packages', '/Users/anil/anaconda2/lib/python2.7/site-packages/Sphinx-1.5.1-py2.7.egg', '/Users/anil/anaconda2/lib/python2.7/site-packages/aeosa', '/Users/anil/anaconda2/lib/python2.7/site-packages/protobuf-3.1.0-py2.7.egg', '/Users/anil/anaconda2/lib/python2.7/site-packages/setuptools-27.2.0-py2.7.egg', '/Users/anil/anaconda2/lib/python2.7/site-packages/xgboost-0.6-py2.7.egg', '/Users/anil/anaconda2/lib/python2.7/site-packages/torchvision-0.1.7-py2.7.egg']
-                     
-let g:pymode_lint_checkers=['pep8']
-let g:pymode_lint_ignore="E401,E501,E731"
-let g:pymode_rope=0
+" let g:pymode_paths=['', '/Users/anil/anaconda2/lib/python27.zip', '/Users/anil/anaconda2/lib/python2.7', '/Users/anil/anaconda2/lib/python2.7/plat-darwin', '/Users/anil/anaconda2/lib/python2.7/plat-mac', '/Users/anil/anaconda2/lib/python2.7/plat-mac/lib-scriptpackages', '/Users/anil/anaconda2/lib/python2.7/lib-tk', '/Users/anil/anaconda2/lib/python2.7/lib-old', '/Users/anil/anaconda2/lib/python2.7/lib-dynload', '/Users/anil/anaconda2/lib/python2.7/site-packages', '/Users/anil/anaconda2/lib/python2.7/site-packages/Sphinx-1.5.1-py2.7.egg', '/Users/anil/anaconda2/lib/python2.7/site-packages/aeosa', '/Users/anil/anaconda2/lib/python2.7/site-packages/protobuf-3.1.0-py2.7.egg', '/Users/anil/anaconda2/lib/python2.7/site-packages/setuptools-27.2.0-py2.7.egg', '/Users/anil/anaconda2/lib/python2.7/site-packages/xgboost-0.6-py2.7.egg', '/Users/anil/anaconda2/lib/python2.7/site-packages/torchvision-0.1.7-py2.7.egg']
+"                      
+" let g:pymode_lint_checkers=['pep8']
+" let g:pymode_lint_ignore="E401,E501,E731"
+" let g:pymode_rope=0
 
 noremap  <buffer> <silent> k gk
 noremap  <buffer> <silent> j gj
