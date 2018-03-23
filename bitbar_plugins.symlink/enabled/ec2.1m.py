@@ -178,7 +178,8 @@ def print_instance_details(instances):
         copy_to_clipboard("--" + item['pr_ip'], item['pr_ip'])
         for tag in item['tags'].items():
             print "--" + str(tag[0])
-            print "----" + str(tag[1])
+            #print "----" + str(tag[1])
+            copy_to_clipboard("----" + str(tag[1]), str(tag[1]))
     
         alarm_name = item['name'] \
             .upper() \
