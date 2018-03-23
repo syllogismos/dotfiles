@@ -27,7 +27,9 @@ print "---"
 
 e = datetime.datetime.now()
 s = e - datetime.timedelta(hours=1)
-instance_types_tups = [('c4.large', '2, 3.75, 0.1'),
+instance_types_tups = [
+                       ('t2.micro', '1, 1, 0.011'),
+                       ('c4.large', '2, 3.75, 0.1'),
                        ('c4.xlarge', '4, 7.5, 0.2'),
                        ('c4.2xlarge', '8, 15, 0.39'),
                        ('c4.4xlarge', '16, 30, 0.79'),
@@ -118,12 +120,15 @@ for reservation in reservations:
         #     continue
         name = None
         prod = None
+        tags = {}
         if 'Tags' in instance.keys():
             for tag in instance['Tags']:
                 if tag['Key'] == "Name":
                     name = tag['Value']
-                if tag['Key'] == "Production":
+                elif tag['Key'] == "Production":
                     prod = tag['Value']
+                else:
+                    tags[tag['Key']] = tag['Value']
         key_name = instance['KeyName']
 
         if 'PublicIpAddress' not in instance:
@@ -149,13 +154,16 @@ for reservation in reservations:
 
         if 'InstanceLifecycle' in instance:
             if instance['InstanceLifecycle'] == 'spot':
-                name = name + ' (%0.2f/%.2f)' % (float(spot_modified[instance_type][av_zone]['SpotPrice']),
-                                                 float(instance_types[instance_type].split(',')[2]))
+                if instance_type in instance_types:
+                    name += ' (%0.2f/%.2f)' % (float(spot_modified[instance_type][av_zone]['SpotPrice']),
+                                               float(instance_types[instance_type].split(',')[2]))
+                name += ' SPOT'
         ec2_instances.append({'name': name, 'ip': ip, 'key': key_name,
                               'instance_id': instance_id, 'pr_ip': pr_ip,
                               'instance_type': instance_type,
                               'av_zone': av_zone,
-                              'prod': prod
+                              'prod': prod,
+                              'tags': tags
                               })
 
 def print_instance_details(instances):
@@ -168,6 +176,9 @@ def print_instance_details(instances):
             % (copy_command)
         copy_to_clipboard("--" + item['ip'], item['ip'])
         copy_to_clipboard("--" + item['pr_ip'], item['pr_ip'])
+        for tag in item['tags'].items():
+            print "--" + str(tag[0])
+            print "----" + str(tag[1])
     
         alarm_name = item['name'] \
             .upper() \

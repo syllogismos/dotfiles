@@ -13,12 +13,4 @@
 
 # ZONES="Australia/Sydney Europe/Amsterdam America/New_York America/Los_Angeles"
 ZONES="America/Chicago America/New_York America/Los_Angeles Europe/Amsterdam"
-echo 'T'
-#echo "$(TZ=Asia/Calcutta date +'%a %b %d %H:%M')"
-#date + '%H:%M:%S IST'
-echo '---'
-date -u +'%H:%M:%S UTC'
-echo "$(TZ=Asia/Calcutta date +'%a %b %d %H:%M')"
-for zone in $ZONES; do
-  echo "$(TZ=$zone date +'%H:%M:%S %z') $zone"
-done
+echo 'Detail-Focus-Momentum'
